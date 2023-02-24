@@ -5,6 +5,22 @@ import Detail from "./pages/Detail";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import { WagmiConfig, createClient, configureChains, mainnet } from "wagmi";
+import { publicProvider } from "wagmi/providers/public";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+
+const { chains, provider, webSocketProvider } = configureChains(
+  [mainnet],
+  [publicProvider()]
+);
+
+const client = createClient({
+  autoConnect: true,
+  connectors: [new MetaMaskConnector({ chains })],
+  provider,
+  webSocketProvider,
+});
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -19,7 +35,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="App">
-      <RouterProvider router={router} />
+      <WagmiConfig client={client}>
+        <RouterProvider router={router} />
+      </WagmiConfig>
     </div>
   );
 }

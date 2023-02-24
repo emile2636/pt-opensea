@@ -12,6 +12,7 @@ import {
 
 import useRequest from "../../hooks/useRequest";
 import { getSingleAsset } from "../../services/assets";
+
 const Detail = () => {
   const { asset_contract_address = "", token_id = "" } = useParams();
   const navigate = useNavigate();
