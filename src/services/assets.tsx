@@ -10,6 +10,7 @@ export interface Asset {
   description: string;
   permalink: string;
   collection: Collection;
+  id: number;
 }
 
 export async function getAssets(params: {
