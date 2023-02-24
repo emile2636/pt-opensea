@@ -12,7 +12,7 @@ import { Asset, getAssets } from "../../services/assets";
 const List = () => {
   const [offset, setOffset] = useState(0);
   const [renderAssets, setRenderAssets] = useState<Asset[]>([]);
-  const { loading, data = { assets: [] } } = useRequest(
+  const { loading, data } = useRequest(
     () =>
       getAssets({
         owner: "0x85fD692D2a075908079261F5E351e7fE0267dB02",
@@ -27,7 +27,7 @@ const List = () => {
       document.documentElement.scrollHeight -
         document.documentElement.scrollTop <=
       document.documentElement.clientHeight;
-    if (atBottom && data.assets.length === 20) {
+    if (atBottom && data?.assets.length === 20) {
       setOffset(offset + 20);
     }
   }, [offset, data]);
@@ -38,9 +38,9 @@ const List = () => {
   }, [handleScroll]);
 
   useEffect(() => {
-    setRenderAssets(renderAssets.concat(data.assets));
+    setRenderAssets(renderAssets.concat(data?.assets || []));
   }, [data]);
-  
+
   return (
     <Container centerContent p={8}>
       <Text as="b">NFT List</Text>
