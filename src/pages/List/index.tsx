@@ -14,6 +14,7 @@ import { Asset, getAssets } from "../../services/assets";
 import { useConnect, useAccount, useDisconnect } from "wagmi";
 
 const defaultAddress = "0x85fD692D2a075908079261F5E351e7fE0267dB02";
+const limit = 20;
 
 const List = () => {
   const { connect, connectors, isLoading, pendingConnector } = useConnect();
@@ -22,12 +23,13 @@ const List = () => {
 
   const [offset, setOffset] = useState(0);
   const [renderAssets, setRenderAssets] = useState<Asset[]>([]);
+
   const { loading, data } = useRequest(
     () =>
       getAssets({
         owner: address || defaultAddress,
         offset,
-        limit: 20,
+        limit,
       }),
     [offset, address]
   );
@@ -41,8 +43,10 @@ const List = () => {
       document.documentElement.scrollHeight -
         document.documentElement.scrollTop <=
       document.documentElement.clientHeight;
-    if (atBottom && data?.assets.length === 20) {
-      setOffset(offset + 20);
+
+    // check if at bottom & last data length equals limit, means there might have data in next page
+    if (atBottom && data?.assets.length === limit) {
+      setOffset(offset + limit);
     }
   }, [offset, data]);
 
@@ -50,6 +54,12 @@ const List = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
+
+  useEffect(() => {
+    // init if address changed
+    setRenderAssets([]);
+    setOffset(0);
+  }, [address]);
 
   const connector = connectors[0]; // only one connector(Metamask)
   return (
