@@ -45,12 +45,12 @@ const Detail = () => {
       </Flex>
       <Divider m={4} />
       <Image
-        h={300}
+        w="100%"
         src={data?.image_url}
         alt={data?.name}
         borderRadius="lg"
         fit="contain"
-        fallbackSrc="https://via.placeholder.com/300"
+        fallbackSrc="https://via.placeholder.com/100"
       />
       <Text fontSize="lg" as="b">
         {data?.name}
