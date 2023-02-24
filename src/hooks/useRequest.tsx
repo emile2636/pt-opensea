@@ -1,8 +1,17 @@
 import { useState, useEffect } from "react";
 
+/**
+ * Description placeholder
+ * @date 2/24/2023 - 12:08:32 PM
+ *
+ * @template T
+ * @param {() => Promise<T>} callback
+ * @param {any[]} [dependencies=[]]
+ * @returns {any, dependencies?: {}) => { loading: any; data: any; }}
+ */
 const useRequest = <T,>(
   callback: () => Promise<T>,
-  dependancies: any[] = []
+  dependencies: any[] = []
 ) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<undefined | T>(undefined);
@@ -19,7 +28,7 @@ const useRequest = <T,>(
       .finally(() => {
         setLoading(false);
       });
-  }, [...dependancies]);
+  }, [...dependencies]);
 
   return {
     loading,
